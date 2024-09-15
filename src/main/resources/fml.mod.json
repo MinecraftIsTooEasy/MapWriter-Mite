@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "map-writer-mite",
+  "version": "${version}",
+  "depends": {
+    "fishmodloader": ">=3.2.3",
+    "many-lib": ">=2.2.0"
+  },
+  "environment": "client",
+  "name": "MapWriter-Mite",
+  "description": "由地图作者制作的地图作者迷你地图, 现移植到Mite\n默认按K打开大地图, 地图配置在大地图左上角, 快捷键配置通过ManyLib提供\n(两处配置是因为我懒得全部适配)",
+  "icon": "icon.png",
+  "authors": [
+    "MapWriter",
+    "Debris",
+    "Xy_Lose"
+  ],
+  "contact": {
+    "homepage": "https://www.mcmod.cn/class/13150.html",
+    "issues": "https://github.com/De6ris/MapWriter-Mite",
+    "sources": "https://github.com/De6ris/MapWriter-Mite"
+  },
+  "licence": "MIT",
+  "entrypoints": {
+    "client": [
+      "mapwriter.event.MwStart"
+    ],
+    "modmenu": [
+      "mapwriter.compat.ModMenuImpl"
+    ]
+  },
+  "mixins": [
+    "MapWriter.mixins.json"
+  ],
+  "custom": {
+    "modmenu:clientsideOnly": true
+  }
+}

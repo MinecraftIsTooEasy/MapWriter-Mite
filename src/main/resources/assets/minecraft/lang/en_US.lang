@@ -1,0 +1,8 @@
+config.name.key.mw_open_gui=Open map GUI
+config.name.key.mw_new_marker=New waypoint
+config.name.key.mw_next_map_mode=Next map mode
+config.name.key.mw_next_marker_group=Next waypoint group
+config.name.key.mw_teleport=Teleport to waypoint
+config.name.key.mw_zoom_in=Minimap zoom in
+config.name.key.mw_zoom_out=Minimap zoom out
+config.name.key.mw_underground_mode=Underground map mode
