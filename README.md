@@ -12,4 +12,6 @@ Acknowledgements:
 
 ---
 
+The initial repository is at [mapwriter's github](https://github.com/daveyliam/mapwriter/tree/1.6.4).
+
 Now I port this project to Mite-1.6.4.
