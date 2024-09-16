@@ -25,6 +25,7 @@ public class GuiIngameMixin {
             )}
     )
     private void renderMiniMap(float par1, boolean par2, int par3, int par4, CallbackInfo ci) {
-        Mw.getInstance().onRenderTick();
+        if (this.mc.gameSettings.gui_mode == 0 && !this.mc.gameSettings.showDebugInfo)
+            Mw.getInstance().onRenderTick();
     }
 }
