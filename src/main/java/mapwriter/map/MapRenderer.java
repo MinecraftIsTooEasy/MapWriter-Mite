@@ -9,6 +9,7 @@ import mapwriter.api.IMwChunkOverlay;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.api.MwAPI;
 import mapwriter.map.mapmode.MapMode;
+import net.minecraft.I18n;
 import net.minecraft.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -222,7 +223,7 @@ public class MapRenderer {
 			}
 			if (this.mw.undergroundMode) {
 				Render.drawCentredString(
-					0, offset, this.mapMode.textColour,"underground mode"
+					0, offset, this.mapMode.textColour, I18n.getString("mw.ingame.underground_mode")
 				);
 			}
 			GL11.glPopMatrix();

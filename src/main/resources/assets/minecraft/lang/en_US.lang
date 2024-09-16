@@ -1,3 +1,4 @@
+# config
 config.name.key.mw_open_gui=Open map GUI
 config.name.key.mw_new_marker=New waypoint
 config.name.key.mw_next_map_mode=Next map mode
@@ -6,3 +7,103 @@ config.name.key.mw_teleport=Teleport to waypoint
 config.name.key.mw_zoom_in=Minimap zoom in
 config.name.key.mw_zoom_out=Minimap zoom out
 config.name.key.mw_underground_mode=Underground map mode
+
+# MapWriter
+mw.button.help=[help]
+mw.button.options=[options]
+mw.button.dimension=[dimension: %d]
+mw.button.group=[group: %s]
+mw.button.overlay=[overlay : %s]
+
+mw.button.group.none=None
+mw.button.group.all=All
+mw.button.group.player_deaths=playerDeaths
+
+mv.button.overlay.none=None
+mv.button.overlay.slime=Slime
+mv.button.overlay.grid=Grid
+
+mw.cursor.pos.ynonull=cursor: (%d, %d, %d)
+mw.cursor.pos.ynull=cursor: (%d, ?, %d)
+mw.cursor.biome=, biome: %s
+
+mw.help.keys=Keys:
+mw.help.space=空格
+mw.help.delete=Delete
+mw.help.c=C
+mw.help.home=Home
+mw.help.end=End
+mw.help.n=N
+mw.help.t=T
+mw.help.p=P
+mw.help.r=R
+mw.help.desc.1=Left click drag or arrow keys pan the map.
+mw.help.desc.2=Mouse wheel or Page Up/Down zooms map.
+mw.help.desc.3=Right click map to create a new marker.
+mw.help.desc.4=Left click drag a selected marker to move it.
+mw.help.desc.5=Mouse wheel over selected marker to cycle colour.
+mw.help.desc.6=Mouse wheel over dimension or group box to cycle.
+mw.help.space.desc=| Next marker group
+mw.help.delete.desc=| Delete selected marker
+mw.help.c.desc=| Cycle selected marker colour
+mw.help.home.desc=| Centre map on player
+mw.help.end.desc=| Centre map on selected marker
+mw.help.n.desc=| Select next marker
+mw.help.t.desc=| Teleport to cursor or selected marker
+mw.help.p.desc=| Save PNG of visible map area
+mw.help.r.desc=| Regenerate visible map area from region files
+mw.help.u.desc=| Underground map mode
+
+mw.title.dimension=Set dimension to:
+mw.text.dimension.error=invalid dimension
+mw.title.marker=Marker Name:
+mw.text.marker.error=marker must have a name
+mw.title.marker.edit=Edit Marker Name:
+mw.title.marker.group=Marker Group:
+mw.title.marker.group.error=marker must have a group name
+mw.title.marker.value.x=Marker X:
+mw.title.marker.value.y=Marker Y:
+mw.title.marker.value.z=Marker Z:
+mw.title.marker.value.error=invalid value
+mw.title.options=MapWriter Options
+mw.title.teleport=Teleport Height:
+mw.text.teleport.error=invalid height
+
+mw.options.draw_coords=Draw coords:
+mw.options.circular_mode=Circular mode:
+mw.options.texture_size=Texture size:
+mw.options.texture_scaling=Texture scaling:
+mw.options.trail_markers=Trail markers:
+mw.options.map_colours=Map colours:
+mw.options.max_draw_distance=Max draw distance:
+mw.options.mini_map_size=Mini map size:
+mw.options.mini_map_position=Mini map position:
+mw.options.map_pixel_snapping=Map pixel snapping:
+mw.options.max_death_markers=Max death markers:
+mw.options.background_mode=Background mode:
+mw.options.hotkeys=Hotkeys
+
+mw.options.mini_map_position.unchanged=unchanged
+mw.options.mini_map_position.top_right=top right
+mw.options.mini_map_position.top_left=top left
+mw.options.mini_map_position.bottom_right=bottom right
+mw.options.mini_map_position.bottom_left=bottom left
+
+mw.options.coords_mode.disabled=disabled
+mw.options.coords_mode.small=small
+mw.options.coords_mode.large=large
+
+mw.options.background_mode.none=none
+mw.options.background_mode.static=static
+mw.options.background_mode.panning=panning
+
+mw.options.texture_scaling.linear=linear
+mw.options.texture_scaling.nearest=nearest
+
+mw.options.map_colours.frozen=frozen
+mw.options.map_colours.auto=auto
+
+mw.options.enabled=enabled
+mw.options.disabled=disabled
+
+mw.ingame.underground_mode=Underground Mode

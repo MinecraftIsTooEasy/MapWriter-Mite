@@ -9,6 +9,7 @@ import mapwriter.api.MwAPI;
 import mapwriter.overlay.OverlayGrid;
 import mapwriter.overlay.OverlaySlime;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.I18n;
 
 public class MwStart implements ClientModInitializer {
 
@@ -19,8 +20,7 @@ public class MwStart implements ClientModInitializer {
         logger = Logger.getLogger("MapWriter");
         InitializationHandler.getInstance().registerInitializationHandler(new InitHandler());
 
-        MwAPI.registerDataProvider("Slime", new OverlaySlime());
-        MwAPI.registerDataProvider("Grid", new OverlayGrid());
+
         //MwAPI.registerDataProvider("Checker", new OverlayChecker());
         //MwAPI.setCurrentDataProvider("Slime");
     }

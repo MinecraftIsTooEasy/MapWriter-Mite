@@ -6,6 +6,7 @@ import java.util.List;
 import mapwriter.MwUtil;
 import mapwriter.event.MwConfig;
 import mapwriter.map.mapmode.MapMode;
+import net.minecraft.I18n;
 
 public class MarkerManager {
 
@@ -14,7 +15,7 @@ public class MarkerManager {
 
     public List<Marker> visibleMarkerList = new ArrayList<Marker>();
 
-    private String visibleGroupName = "none";
+    private String visibleGroupName = I18n.getString("mw.button.group.none");
 
     public Marker selectedMarker = null;
 
@@ -61,7 +62,7 @@ public class MarkerManager {
         if (groupName != null) {
             this.visibleGroupName = MwUtil.mungeString(groupName);
         } else {
-            this.visibleGroupName = "none";
+            this.visibleGroupName = I18n.getString("mw.button.group.none");
         }
     }
 
@@ -73,7 +74,7 @@ public class MarkerManager {
         this.markerList.clear();
         this.groupList.clear();
         this.visibleMarkerList.clear();
-        this.visibleGroupName = "none";
+        this.visibleGroupName = I18n.getString("mw.button.group.none");
     }
 
     public String markerToString(Marker marker) {
@@ -163,10 +164,10 @@ public class MarkerManager {
     public void update() {
         this.visibleMarkerList.clear();
         this.groupList.clear();
-        this.groupList.add("none");
-        this.groupList.add("all");
+        this.groupList.add(I18n.getString("mw.button.group.none"));
+        this.groupList.add(I18n.getString("mw.button.group.all"));
         for (Marker marker : this.markerList) {
-            if (marker.groupName.equals(this.visibleGroupName) || this.visibleGroupName.equals("all")) {
+            if (marker.groupName.equals(this.visibleGroupName) || this.visibleGroupName.equals(I18n.getString("mw.button.group.all"))) {
                 this.visibleMarkerList.add(marker);
             }
             if (!this.groupList.contains(marker.groupName)) {
@@ -174,7 +175,7 @@ public class MarkerManager {
             }
         }
         if (!this.groupList.contains(this.visibleGroupName)) {
-            this.visibleGroupName = "none";
+            this.visibleGroupName = I18n.getString("mw.button.group.none");
         }
     }
 
@@ -189,8 +190,8 @@ public class MarkerManager {
             }
             this.visibleGroupName = this.groupList.get(i);
         } else {
-            this.visibleGroupName = "none";
-            this.groupList.add("none");
+            this.visibleGroupName = I18n.getString("mw.button.group.none");
+            this.groupList.add(I18n.getString("mw.button.group.none"));
         }
     }
 
@@ -200,7 +201,7 @@ public class MarkerManager {
 
     public int countMarkersInGroup(String group) {
         int count = 0;
-        if (group.equals("all")) {
+        if (group.equals(I18n.getString("mw.button.group.all"))) {
             count = this.markerList.size();
         } else {
             for (Marker marker : this.markerList) {

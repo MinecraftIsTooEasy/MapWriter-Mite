@@ -6,7 +6,7 @@ import mapwriter.Mw;
 import mapwriter.MwUtil;
 import mapwriter.api.IMwDataProvider;
 import mapwriter.api.MwAPI;
-import mapwriter.event.NewMWConfig;
+import mapwriter.event.MwHotkeyConfig;
 import mapwriter.map.MapView;
 import mapwriter.map.Marker;
 import mapwriter.map.MapRenderer;
@@ -462,13 +462,13 @@ public class MwGui extends GuiScreen {
     public void drawStatus(int bX, int bY, int bZ) {
         String s;
         if (bY != 0) {
-            s = String.format("cursor: (%d, %d, %d)", bX, bY, bZ);
+            s = String.format(I18n.getString("mw.cursor.pos.ynonull"), bX, bY, bZ);
         } else {
-            s = String.format("cursor: (%d, ?, %d)", bX, bZ);
+            s = String.format(I18n.getString("mw.cursor.pos.ynull"), bX, bZ);
         }
         if (this.mc.theWorld != null) {
             if (!this.mc.theWorld.getChunkFromBlockCoords(bX, bZ).isEmpty()) {
-                s += String.format(", biome: %s", this.mc.theWorld.getBiomeGenForCoords(bX, bZ).biomeName);
+                s += String.format(I18n.getString("mw.cursor.biome"), this.mc.theWorld.getBiomeGenForCoords(bX, bZ).biomeName);
             }
         }
          
@@ -487,37 +487,69 @@ public class MwGui extends GuiScreen {
 
     public void drawHelp() {
         drawRect(10, 20, this.width - 20, this.height - 30, 0x80000000);
-        this.fontRenderer.drawSplitString(
-                "Keys:\n\n" +
-                        "  Space\n" +
-                        "  Delete\n" +
-                        "  C\n" +
-                        "  Home\n" +
-                        "  End\n" +
-                        "  N\n" +
-                        "  T\n" +
-                        "  P\n" +
-                        "  R\n" +
-                        "  U\n\n" +
-                        "Left click drag or arrow keys pan the map.\n" +
-                        "Mouse wheel or Page Up/Down zooms map.\n" +
-                        "Right click map to create a new marker.\n" +
-                        "Left click drag a selected marker to move it.\n" +
-                        "Mouse wheel over selected marker to cycle colour.\n" +
-                        "Mouse wheel over dimension or group box to cycle.\n",
-                15, 24, this.width - 30, 0xffffff);
-        this.fontRenderer.drawSplitString(
-                "| Next marker group\n" +
-                        "| Delete selected marker\n" +
-                        "| Cycle selected marker colour\n" +
-                        "| Centre map on player\n" +
-                        "| Centre map on selected marker\n" +
-                        "| Select next marker\n" +
-                        "| Teleport to cursor or selected marker\n" +
-                        "| Save PNG of visible map area\n" +
-                        "| Regenerate visible map area from region files\n" +
-                        "| Underground map mode\n",
-                75, 42, this.width - 90, 0xffffff);
+//        this.fontRenderer.drawSplitString(
+//                "Keys:\n\n" +
+//                        "  Space\n" +
+//                        "  Delete\n" +
+//                        "  C\n" +
+//                        "  Home\n" +
+//                        "  End\n" +
+//                        "  N\n" +
+//                        "  T\n" +
+//                        "  P\n" +
+//                        "  R\n" +
+//                        "  U\n\n" +
+//                        "Left click drag or arrow keys pan the map.\n" +
+//                        "Mouse wheel or Page Up/Down zooms map.\n" +
+//                        "Right click map to create a new marker.\n" +
+//                        "Left click drag a selected marker to move it.\n" +
+//                        "Mouse wheel over selected marker to cycle colour.\n" +
+//                        "Mouse wheel over dimension or group box to cycle.\n",
+//                15, 24, this.width - 30, 0xffffff);
+//        this.fontRenderer.drawSplitString(
+//                "| Next marker group\n" +
+//                        "| Delete selected marker\n" +
+//                        "| Cycle selected marker colour\n" +
+//                        "| Centre map on player\n" +
+//                        "| Centre map on selected marker\n" +
+//                        "| Select next marker\n" +
+//                        "| Teleport to cursor or selected marker\n" +
+//                        "| Save PNG of visible map area\n" +
+//                        "| Regenerate visible map area from region files\n" +
+//                        "| Underground map mode\n",
+//                75, 42, this.width - 90, 0xffffff);
+        int row = 0;
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.keys"), 15, 24 + 10 * row++, this.width - 30, 0xffffff);
+        row += 1;
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.space"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.delete"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.c"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.home"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.end"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.n"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.t"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.p"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.r"), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(MwHotkeyConfig.keyUndergroundMode.getDisplayText(), 25, 24 + 10 * row++, this.width - 30, 0xffffff);
+        row += 1;
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.desc.1"), 15, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.desc.2"), 15, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.desc.3"), 15, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.desc.4"), 15, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.desc.5"), 15, 24 + 10 * row++, this.width - 30, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.desc.6"), 15, 24 + 10 * row++, this.width - 30, 0xffffff);
+
+        int row1 = 0;
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.space.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.delete.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.c.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.home.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.end.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.n.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.t.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.p.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.r.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
+        this.fontRenderer.drawSplitString(I18n.getString("mw.help.u.desc"), 75, 44 + 10 * row1++, this.width - 90, 0xffffff);
     }
 
     public void drawMouseOverHint(int x, int y, String title, int mX, int mY, int mZ) {
@@ -593,13 +625,13 @@ public class MwGui extends GuiScreen {
         this.drawStatus(this.mouseBlockX, this.mouseBlockY, this.mouseBlockZ);
 
         // draw labels
-        this.helpLabel.draw(menuX, menuY, "[help]");
-        this.optionsLabel.drawToRightOf(this.helpLabel, "[options]");
-        String dimString = String.format("[dimension: %d]", this.mapView.getDimension());
+        this.helpLabel.draw(menuX, menuY, I18n.getString("mw.button.help"));
+        this.optionsLabel.drawToRightOf(this.helpLabel, I18n.getString("mw.button.options"));
+        String dimString = String.format(I18n.getString("mw.button.dimension"), this.mapView.getDimension());
         this.dimensionLabel.drawToRightOf(this.optionsLabel, dimString);
-        String groupString = String.format("[group: %s]", this.mw.markerManager.getVisibleGroupName());
+        String groupString = String.format(I18n.getString("mw.button.group"), this.mw.markerManager.getVisibleGroupName());
         this.groupLabel.drawToRightOf(this.dimensionLabel, groupString);
-        String overlayString = String.format("[overlay : %s]", MwAPI.getCurrentProviderName());
+        String overlayString = String.format(I18n.getString("mw.button.overlay"), MwAPI.getCurrentProviderName());
         this.overlayLabel.drawToRightOf(this.groupLabel, overlayString);
 
         // help message on mouse over

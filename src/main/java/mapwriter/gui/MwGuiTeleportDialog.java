@@ -5,6 +5,7 @@ import mapwriter.map.MapView;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.GuiScreen;
+import net.minecraft.I18n;
 
 @Environment(EnvType.CLIENT)
 public class MwGuiTeleportDialog extends MwGuiTextDialog {
@@ -14,7 +15,7 @@ public class MwGuiTeleportDialog extends MwGuiTextDialog {
 	final int teleportX, teleportZ;
     
     public MwGuiTeleportDialog(GuiScreen parentScreen, Mw mw, MapView mapView, int x, int y, int z) {
-        super(parentScreen, "Teleport Height:", "" + y, "invalid height");
+        super(parentScreen, I18n.getString("mw.title.teleport"), "" + y, I18n.getString("mw.text.teleport.error"));
         this.mw = mw;
         this.mapView = mapView;
         this.teleportX = x;

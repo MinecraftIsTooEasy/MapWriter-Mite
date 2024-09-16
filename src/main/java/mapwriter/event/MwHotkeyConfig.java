@@ -9,15 +9,15 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class NewMWConfig extends SimpleConfigs {
+public class MwHotkeyConfig extends SimpleConfigs {
 
-    private static final NewMWConfig Instance;
+    private static final MwHotkeyConfig Instance;
 
-    public NewMWConfig(String name, List<ConfigHotkey> hotkeys, List<?> values) {
+    public MwHotkeyConfig(String name, List<ConfigHotkey> hotkeys, List<?> values) {
         super(name, hotkeys, values);
     }
 
-    public static NewMWConfig getInstance() {
+    public static MwHotkeyConfig getInstance() {
         return Instance;
     }
 
@@ -26,7 +26,7 @@ public class NewMWConfig extends SimpleConfigs {
     // hotkey
     public static ConfigHotkey keyMapGui = new ConfigHotkey("key.mw_open_gui", KeybindMulti.fromStorageString("K", KeybindSettings.INGAME_BOTH), null);
     public static ConfigHotkey keyNewMarker = new ConfigHotkey("key.mw_new_marker", Keyboard.KEY_INSERT, null);
-    public static ConfigHotkey keyMapMode = new ConfigHotkey("key.mw_next_map_mode", Keyboard.KEY_N, null);
+    public static ConfigHotkey keyMapMode = new ConfigHotkey("key.mw_next_map_mode", Keyboard.KEY_I, null);
     public static ConfigHotkey keyNextGroup = new ConfigHotkey("key.mw_next_marker_group", KeybindMulti.fromStorageString("COMMA", KeybindSettings.INGAME_BOTH), null);
     public static ConfigHotkey keyTeleport = new ConfigHotkey("key.mw_teleport", Keyboard.KEY_PERIOD, null);
     public static ConfigHotkey keyZoomIn = new ConfigHotkey("key.mw_zoom_in", KeybindMulti.fromStorageString("PRIOR", KeybindSettings.INGAME_BOTH), null);
@@ -37,6 +37,6 @@ public class NewMWConfig extends SimpleConfigs {
 
     static {
         hotkeys = List.of(keyMapGui, keyNewMarker, keyMapMode, keyNextGroup, keyTeleport, keyZoomIn, keyZoomOut, keyUndergroundMode);
-        Instance = new NewMWConfig(Mw.MOD_ID, hotkeys, null);
+        Instance = new MwHotkeyConfig(Mw.MOD_ID, hotkeys, null);
     }
 }

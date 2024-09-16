@@ -5,6 +5,7 @@ import mapwriter.map.MarkerManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.GuiScreen;
+import net.minecraft.I18n;
 
 @Environment(EnvType.CLIENT)
 public class MwGuiMarkerDialog extends MwGuiTextDialog {
@@ -19,7 +20,7 @@ public class MwGuiMarkerDialog extends MwGuiTextDialog {
     private int dimension = 0;
     
     public MwGuiMarkerDialog(GuiScreen parentScreen, MarkerManager markerManager, String markerName, String markerGroup, int x, int y, int z, int dimension) {
-        super(parentScreen, "Marker Name:", markerName, "marker must have a name");
+        super(parentScreen, I18n.getString("mw.title.marker"), markerName, I18n.getString("mw.text.marker.error"));
 		this.markerManager = markerManager;
 		this.markerName = markerName;
 		this.markerGroup = markerGroup;
@@ -31,7 +32,7 @@ public class MwGuiMarkerDialog extends MwGuiTextDialog {
     }
     
     public MwGuiMarkerDialog(GuiScreen parentScreen, MarkerManager markerManager, Marker editingMarker) {
-        super(parentScreen, "Edit Marker Name:", editingMarker.name, "marker must have a name");
+        super(parentScreen, I18n.getString("mw.title.marker.edit"), editingMarker.name, I18n.getString("mw.text.marker.error"));
         this.markerManager = markerManager;
 		this.editingMarker = editingMarker;
 		this.markerName = editingMarker.name;
@@ -49,36 +50,36 @@ public class MwGuiMarkerDialog extends MwGuiTextDialog {
 		case 0:
 			this.markerName = this.getInputAsString();
 			if (this.inputValid) {
-				this.title = "Marker Group:";
+				this.title = I18n.getString("mw.title.marker.group");
 				this.setText(this.markerGroup);
-				this.error = "marker must have a group name";
+				this.error = I18n.getString("mw.title.marker.group.error");
 				this.state++;
 			}
 			break;
 		case 1:
 			this.markerGroup = this.getInputAsString();
 			if (this.inputValid) {
-				this.title = "Marker X:";
+				this.title = I18n.getString("mw.title.marker.value.x");
 				this.setText("" + this.markerX);
-				this.error = "invalid value";
+				this.error = I18n.getString("mw.title.marker.value.error");
 				this.state++;
 			}
 			break;
 		case 2:
 			this.markerX = this.getInputAsInt();
 			if (this.inputValid) {
-				this.title = "Marker Y:";
+				this.title = I18n.getString("mw.title.marker.value.y");
 				this.setText("" + this.markerY);
-				this.error = "invalid value";
+				this.error = I18n.getString("mw.title.marker.value.error");
 				this.state++;
 			}
 			break;
 		case 3:
 			this.markerY = this.getInputAsInt();
 			if (this.inputValid) {
-				this.title = "Marker Z:";
+				this.title = I18n.getString("mw.title.marker.value.z");
 				this.setText("" + this.markerZ);
-				this.error = "invalid value";
+				this.error = I18n.getString("mw.title.marker.value.error");
 				this.state++;
 			}
 			break;

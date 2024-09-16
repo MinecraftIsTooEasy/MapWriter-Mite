@@ -5,6 +5,7 @@ import mapwriter.map.MapView;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.GuiScreen;
+import net.minecraft.I18n;
 
 @Environment(EnvType.CLIENT)
 public class MwGuiDimensionDialog extends MwGuiTextDialog {
@@ -14,7 +15,7 @@ public class MwGuiDimensionDialog extends MwGuiTextDialog {
 	final int dimension;
     
     public MwGuiDimensionDialog(GuiScreen parentScreen, Mw mw, MapView mapView, int dimension) {
-        super(parentScreen, "Set dimension to:", "" + dimension, "invalid dimension");
+        super(parentScreen, I18n.getString("mw.title.dimension"), "" + dimension, I18n.getString("mw.text.dimension.error"));
         this.mw = mw;
         this.mapView = mapView;
         this.dimension = dimension;

@@ -594,15 +594,15 @@ public class Mw implements IClientTickHandler {
     public void onPlayerDeath() {
         if (this.ready && (this.maxDeathMarkers > 0)) {
             this.updatePlayer();
-            int deleteCount = this.markerManager.countMarkersInGroup("playerDeaths") - this.maxDeathMarkers + 1;
+            int deleteCount = this.markerManager.countMarkersInGroup(I18n.getString("mw.button.group.player_deaths")) - this.maxDeathMarkers + 1;
             for (int i = 0; i < deleteCount; i++) {
                 // delete the first marker found in the group "playerDeaths".
                 // as new markers are only ever appended to the marker list this will delete the
                 // earliest death marker added.
-                this.markerManager.delMarker(null, "playerDeaths");
+                this.markerManager.delMarker(null, I18n.getString("mw.button.group.player_deaths"));
             }
-            this.markerManager.addMarker(MwUtil.getCurrentDateString(), "playerDeaths", this.playerXInt, this.playerYInt, this.playerZInt, this.playerDimension, 0xffff0000);
-            this.markerManager.setVisibleGroupName("playerDeaths");
+            this.markerManager.addMarker(MwUtil.getCurrentDateString(), I18n.getString("mw.button.group.player_deaths"), this.playerXInt, this.playerYInt, this.playerZInt, this.playerDimension, 0xffff0000);
+            this.markerManager.setVisibleGroupName(I18n.getString("mw.button.group.player_deaths"));
             this.markerManager.update();
         }
     }

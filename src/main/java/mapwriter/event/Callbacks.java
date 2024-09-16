@@ -14,7 +14,7 @@ public class Callbacks {
 
     public static void init(Mw mw, Minecraft mc) {
 
-        NewMWConfig.keyMapGui.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyMapGui.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             if (mc.currentScreen == null) {
                 mc.displayGuiScreen(new MwGui(mw));
@@ -27,7 +27,7 @@ public class Callbacks {
             return false;
         });
 
-        NewMWConfig.keyNewMarker.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyNewMarker.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             String group = mw.markerManager.getVisibleGroupName();
             if (group.equals("none")) {
@@ -48,13 +48,13 @@ public class Callbacks {
             return true;
         });
 
-        NewMWConfig.keyMapMode.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyMapMode.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             mw.miniMap.nextOverlayMode(1);
             return true;
         });
 
-        NewMWConfig.keyNextGroup.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyNextGroup.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             if (mc.currentScreen == null || mc.currentScreen instanceof MwGui) {
                 mw.markerManager.nextGroup();
@@ -67,7 +67,7 @@ public class Callbacks {
             return false;
         });
 
-        NewMWConfig.keyTeleport.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyTeleport.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             // set or remove marker
             Marker marker = mw.markerManager.getNearestMarkerInDirection(
@@ -80,7 +80,7 @@ public class Callbacks {
             return true;
         });
 
-        NewMWConfig.keyZoomIn.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyZoomIn.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             if (mc.currentScreen == null || mc.currentScreen instanceof MwGui) {
                 mw.miniMap.view.adjustZoomLevel(-1);
@@ -89,7 +89,7 @@ public class Callbacks {
             return false;
         });
 
-        NewMWConfig.keyZoomOut.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyZoomOut.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             if (mc.currentScreen == null || mc.currentScreen instanceof MwGui) {
                 mw.miniMap.view.adjustZoomLevel(1);
@@ -98,7 +98,7 @@ public class Callbacks {
             return false;
         });
 
-        NewMWConfig.keyUndergroundMode.getKeybind().setCallback((keyAction, iKeybind) -> {
+        MwHotkeyConfig.keyUndergroundMode.getKeybind().setCallback((keyAction, iKeybind) -> {
             if (!ready()) return false;
             if (mc.currentScreen == null || mc.currentScreen instanceof MwGui) {
                 mw.toggleUndergroundMode();

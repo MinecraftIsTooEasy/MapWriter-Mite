@@ -191,7 +191,7 @@ public class UndergroundTexture extends Texture {
                     int blockID = world.getBlockId(x, y, z);
                     Block block = Block.blocksList[blockID];
 //					if ((block == null) || !block.isOpaqueCube()) {
-                    if ((block == null) || !block.isOpaqueStandardFormCube(world.getBlockMetadata(x, y, z))) {
+                    if ((block == null)) {
                         // if block is not opaque
                         this.updateFlags[chunkOffset][columnOffset] = (byte) ChunkRender.FLAG_NON_OPAQUE;
                         this.processBlock(xi + 1, y, zi);

@@ -1,6 +1,7 @@
 package mapwriter.gui;
 
 import mapwriter.Mw;
+import mapwriter.event.MwHotkeyConfig;
 import net.minecraft.*;
 
 public class MwGuiOptionSlot extends GuiSlot {
@@ -14,68 +15,71 @@ public class MwGuiOptionSlot extends GuiSlot {
 	
 	private int miniMapPositionIndex = 0;
 	private static final String[] miniMapPositionStringArray = {
-		"unchanged",
-		"top right",
-		"top left",
-		"bottom right",
-		"bottom left"
+		I18n.getString("mw.options.mini_map_position.unchanged"),
+		I18n.getString("mw.options.mini_map_position.top_right"),
+		I18n.getString("mw.options.mini_map_position.top_left"),
+		I18n.getString("mw.options.mini_map_position.bottom_right"),
+		I18n.getString("mw.options.mini_map_position.bottom_left")
 	};
 	private static final String[] coordsModeStringArray = {
-		"disabled",
-		"small",
-		"large"
+		I18n.getString("mw.options.coords_mode.disabled"),
+		I18n.getString("mw.options.coords_mode.small"),
+		I18n.getString("mw.options.coords_mode.large")
 	};
 	private static final String[] backgroundModeStringArray = {
-		"none",
-		"static",
-		"panning"
+		I18n.getString("mw.options.background_mode.none"),
+		I18n.getString("mw.options.background_mode.static"),
+		I18n.getString("mw.options.background_mode.panning")
 	};
 	
-	private GuiButton[] buttons = new GuiButton[12];
+	private GuiButton[] buttons = new GuiButton[13];
 	
     static final ResourceLocation WIDGET_TEXTURE_LOC = new ResourceLocation("textures/gui/widgets.png");
 	
 	public void updateButtonLabel(int i) {
 		switch(i) {
 		case 0:
-			this.buttons[i].displayString = "Draw coords: " + coordsModeStringArray[this.mw.coordsMode];
+			this.buttons[i].displayString = I18n.getString("mw.options.draw_coords") + coordsModeStringArray[this.mw.coordsMode];
 			break;
 		case 1:
-			this.buttons[i].displayString = "Circular mode: " + this.mw.miniMap.smallMapMode.circular;
+			this.buttons[i].displayString = I18n.getString("mw.options.circular_mode") + this.mw.miniMap.smallMapMode.circular;
 			break;
 		case 2:
-			this.buttons[i].displayString = "Texture size: " + this.mw.configTextureSize;
+			this.buttons[i].displayString = I18n.getString("mw.options.texture_size") + this.mw.configTextureSize;
 			break;
 		case 3:	
-			this.buttons[i].displayString = "Texture scaling: " + (this.mw.linearTextureScalingEnabled ? "linear" : "nearest");
+			this.buttons[i].displayString = I18n.getString("mw.options.texture_scaling") + (this.mw.linearTextureScalingEnabled ? I18n.getString("mw.options.texture_scaling.linear") : I18n.getString("mw.options.texture_scaling.nearest"));
 			break;
 		case 4:
-			this.buttons[i].displayString = "Trail markers: " + (this.mw.playerTrail.enabled);
+			this.buttons[i].displayString = I18n.getString("mw.options.trail_markers") + (this.mw.playerTrail.enabled);
 			break;
 		case 5:
-			this.buttons[i].displayString = "Map colours: " + (this.mw.useSavedBlockColours ? "frozen" : "auto");
+			this.buttons[i].displayString = I18n.getString("mw.options.map_colours") + (this.mw.useSavedBlockColours ? I18n.getString("mw.options.map_colours.frozen") : I18n.getString("mw.options.map_colours.auto"));
 			break;
 		case 6:
-			this.buttons[i].displayString = "Max draw distance: " + Math.round(Math.sqrt(this.mw.maxChunkSaveDistSq));
+			this.buttons[i].displayString = I18n.getString("mw.options.max_draw_distance") + Math.round(Math.sqrt(this.mw.maxChunkSaveDistSq));
 			break;
 		case 7:
-			this.buttons[i].displayString = "Mini map size: " + this.mw.miniMap.smallMapMode.heightPercent;
+			this.buttons[i].displayString = I18n.getString("mw.options.mini_map_size") + this.mw.miniMap.smallMapMode.heightPercent;
 			break;
 		case 8:
-			this.buttons[i].displayString = "Mini map position: " + miniMapPositionStringArray[this.miniMapPositionIndex];
+			this.buttons[i].displayString = I18n.getString("mw.options.mini_map_position") + miniMapPositionStringArray[this.miniMapPositionIndex];
 			break;
 		case 9:
-			this.buttons[i].displayString = "Map pixel snapping: " + (this.mw.mapPixelSnapEnabled ? "enabled" : "disabled");
+			this.buttons[i].displayString = I18n.getString("mw.options.map_pixel_snapping") + (this.mw.mapPixelSnapEnabled ? I18n.getString("mw.options.enabled") : I18n.getString("mw.options.disabled"));
 			break;
 		case 10:
-			this.buttons[i].displayString = "Max death markers: " + this.mw.maxDeathMarkers;
+			this.buttons[i].displayString = I18n.getString("mw.options.max_death_markers") + this.mw.maxDeathMarkers;
 			break;
 		case 11:
-			this.buttons[i].displayString = "Background mode: " + backgroundModeStringArray[this.mw.backgroundTextureMode];
+			this.buttons[i].displayString = I18n.getString("mw.options.background_mode") + backgroundModeStringArray[this.mw.backgroundTextureMode];
 			break;
 		//case 11:
 		//	this.buttons[i].displayString = "Map Lighting: " + (this.mw.lightingEnabled ? "enabled" : "disabled");
-		//	break;	
+		//	break;
+		case 12:
+			this.buttons[i].displayString = I18n.getString("mw.options.hotkeys");
+			break;
 		default:
 			break;
 		}
@@ -190,6 +194,10 @@ public class MwGuiOptionSlot extends GuiSlot {
 		case 11:
 			// background texture mode
 			this.mw.backgroundTextureMode = (this.mw.backgroundTextureMode + 1) % 3;
+			break;
+		case 12:
+			// hotkeys
+			Minecraft.getMinecraft().displayGuiScreen(MwHotkeyConfig.getInstance().getConfigScreen(null));
 			break;
 		//case 11:
 		//	// lighting

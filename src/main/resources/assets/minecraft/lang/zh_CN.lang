@@ -1,0 +1,109 @@
+# config
+config.name.key.mw_open_gui=打开地图 GUI
+config.name.key.mw_new_marker=新建路径点
+config.name.key.mw_next_map_mode=下一个地图模式
+config.name.key.mw_next_marker_group=下一个路径点组
+config.name.key.mw_teleport=传送到路径点
+config.name.key.mw_zoom_in=放大小地图
+config.name.key.mw_zoom_out=缩小小地图
+config.name.key.mw_underground_mode=地下地图模式
+
+# MapWriter
+mw.button.help=[帮助]
+mw.button.options=[首选项]
+mw.button.dimension=[维度: %d]
+mw.button.group=[标记组: %s]
+mw.button.overlay=[叠加层模式 : %s]
+
+mw.button.group.none=无
+mw.button.group.all=全部
+mw.button.group.player_deaths=玩家死亡点
+
+mv.button.overlay.none=无
+mv.button.overlay.slime=史莱姆区块
+mv.button.overlay.grid=区块网格
+
+mw.cursor.pos.ynonull=指针: (%d, %d, %d)
+mw.cursor.pos.ynull=指针: (%d, ?, %d)
+mw.cursor.biome=, 生物群系: %s
+
+mw.help.keys=快捷键:
+mw.help.space=空格
+mw.help.delete=Delete
+mw.help.c=C
+mw.help.home=Home
+mw.help.end=End
+mw.help.n=N
+mw.help.t=T
+mw.help.p=P
+mw.help.r=R
+mw.help.desc.1=左键单击拖动或箭头键平移地图。
+mw.help.desc.2=鼠标滚轮或 Page Up/Down 缩放地图。
+mw.help.desc.3=右键单击小地图以创建新标记。
+mw.help.desc.4=左键单击拖动选定的标记以移动它。
+mw.help.desc.5=将鼠标滚轮放在所选标记上以循环颜色。
+mw.help.desc.6=将鼠标悬停在尺寸或组框上以循环。
+mw.help.space.desc=| 下一个标记组
+mw.help.delete.desc=| 删除所选标记
+mw.help.c.desc=| 循环选定的标记颜色
+mw.help.home.desc=| 以玩家为中心
+mw.help.end.desc=| 以选中标记为中心
+mw.help.n.desc=| 选择下一个标记
+mw.help.t.desc=| 传送到光标或选定的标记
+mw.help.p.desc=| 保存可见地图区域的图片(.png格式)
+mw.help.r.desc=| 从区域文件重新生成可见地图区域
+mw.help.u.desc=| 地下模式
+
+mw.title.dimension=将小地图维度设置为：
+mw.text.dimension.error=无效维度
+mw.title.marker=标记名称：
+mw.text.marker.error=标记必须有个名称
+mw.title.marker.edit=编辑标记名称：
+mw.title.marker.group=标记组：
+mw.title.marker.group.error=标记必须具有组名称
+mw.title.marker.value.x=标记 X:
+mw.title.marker.value.y=标记 Y:
+mw.title.marker.value.z=标记 Z:
+mw.title.marker.value.error=无效数值
+mw.title.options=MapWriter 选项
+mw.title.teleport=传送高度：
+mw.text.teleport.error=无效高度
+
+mw.options.draw_coords=绘制坐标：
+mw.options.circular_mode=圆形模式：
+mw.options.texture_size=纹理大小：
+mw.options.texture_scaling=纹理缩放：
+mw.options.trail_markers=足迹标记：
+mw.options.map_colours=地图颜色：
+mw.options.max_draw_distance=最大绘制距离：
+mw.options.mini_map_size=小地图尺寸：
+mw.options.mini_map_position=小地图位置：
+mw.options.map_pixel_snapping=地图像素对齐：
+mw.options.max_death_markers=最大死亡标记数：
+mw.options.background_mode=背景模式：
+mw.options.hotkeys=快捷键
+
+mw.options.mini_map_position.unchanged=不变
+mw.options.mini_map_position.top_right=右上
+mw.options.mini_map_position.top_left=左上
+mw.options.mini_map_position.bottom_right=右下
+mw.options.mini_map_position.bottom_left=左下
+
+mw.options.coords_mode.disabled=禁用
+mw.options.coords_mode.small=小型
+mw.options.coords_mode.large=大型
+
+mw.options.background_mode.none=无
+mw.options.background_mode.static=静态
+mw.options.background_mode.panning=平移
+
+mw.options.texture_scaling.linear=线性
+mw.options.texture_scaling.nearest=最近
+
+mw.options.map_colours.frozen=frozen
+mw.options.map_colours.auto=自动
+
+mw.options.enabled=启用
+mw.options.disabled=禁用
+
+mw.ingame.underground_mode=地下模式

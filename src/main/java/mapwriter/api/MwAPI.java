@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.google.common.collect.HashBiMap;
+import net.minecraft.I18n;
 
 public class MwAPI {
 
@@ -38,7 +39,7 @@ public class MwAPI {
 		if (currentProvider != null)
 			return getProviderName(currentProvider);
 		else
-			return "None";
+			return I18n.getString("mv.button.overlay.none");
 	}
 	
 	public static IMwDataProvider setCurrentDataProvider(String name){
