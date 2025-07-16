@@ -4,7 +4,8 @@
   "version": "${version}",
   "depends": {
     "fishmodloader": ">=3.2.3",
-    "many-lib": ">=2.2.0"
+    "many-lib": ">=2.2.0",
+    "forge_config": "*"
   },
   "environment": "client",
   "name": "MapWriter-Mini-Map",

@@ -41,6 +41,7 @@ dependencies {
     implementation files(loom.getFML().toPath())
     implementation files("${lib_dir}/ManyLib.jar")
     implementation files("${lib_dir}/ModMenu.jar")
+    implementation files("${lib_dir}/ForgeConfig.jar")
 }
 
 processResources {

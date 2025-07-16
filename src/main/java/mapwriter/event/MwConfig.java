@@ -1,133 +1,39 @@
 package mapwriter.event;
 
+import mapwriter.MwUtil;
+import net.minecraftforge.common.Configuration;
+
 import java.io.File;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import fi.dy.masa.malilib.util.JsonUtils;
-import mapwriter.MwUtil;
-
-public class MwConfig {
-    private final File file;
-
-    private JsonObject jsonObject = new JsonObject();
+public class MwConfig extends Configuration {
 
     public MwConfig(File file) {
-        this.file = file;
+        super(file, true);
     }
-
-    public void load() {
-        if (!this.file.exists()) {
-            return;// it will save and create file after first launch
-        }
-        JsonElement jsonElement = JsonUtils.parseJsonFile(this.file);
-        if (jsonElement != null && jsonElement.isJsonObject()) {
-            this.jsonObject = jsonElement.getAsJsonObject();
-        }
-    }
-
-    public void save() {
-        // before you save, you must fill the jsonObject first
-        JsonUtils.writeJsonToFile(this.jsonObject, this.file);
-    }
-
-    JsonObject enterCategory(String category) {
-        JsonElement jsonElement = JsonUtils.getNestedObject(this.jsonObject, category, true);
-        if (jsonElement != null && jsonElement.isJsonObject()) {
-            return jsonElement.getAsJsonObject();
-        }
-        return null;
-    }
-
-    public int getInt(String category, String key, int defaultValue) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            if (JsonUtils.hasInteger(object, key)) {
-                return object.get(key).getAsInt();
-            }
-        }
-        return defaultValue;
-    }
-
-    public String getString(String category, String key, String defaultValue) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            if (JsonUtils.hasString(object, key)) {
-                return object.get(key).getAsString();
-            }
-        }
-        return defaultValue;
-    }
-
-    public int[] getIntArray(String category, String key, int[] defaultValue) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            if (JsonUtils.hasArray(object, key)) {
-                JsonArray asJsonArray = object.get(key).getAsJsonArray();
-                try {
-                    int[] result = new int[asJsonArray.size()];
-                    for (int i = 0; i < asJsonArray.size(); i++) {
-                        result[i] = asJsonArray.get(i).getAsInt();
-                    }
-                    return result;
-                } catch (Exception ignored) {
-                }
-            }
-        }
-        return defaultValue;
-    }
-
 
     public boolean getOrSetBoolean(String category, String key, boolean defaultValue) {
-        return this.getInt(category, key, defaultValue ? 1 : 0) != 0;
+        return this.get(category, key, defaultValue ? 1 : 0).getInt() != 0;
     }
 
     public void setBoolean(String category, String key, boolean value) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            object.add(key, new JsonPrimitive(value));
-        }
+        this.get(category, key, value).set(value ? 1 : 0);
     }
 
     public int getOrSetInt(String category, String key, int defaultValue, int minValue, int maxValue) {
-        int value = this.getInt(category, key, defaultValue);
+        int value = this.get(category, key, defaultValue).getInt();
         return Math.min(Math.max(minValue, value), maxValue);
     }
 
     public void setInt(String category, String key, int value) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            object.add(key, new JsonPrimitive(value));
-        }
-    }
-
-    public void setString(String category, String key, String value) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            object.add(key, new JsonPrimitive(value));
-        }
-    }
-
-    public boolean hasKey(String category, String key) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            return object.has(key);
-        }
-        return false;
-    }
-
-    public boolean hasCategory(String category) {
-        return this.enterCategory(category) != null;
+        this.get(category, key, value).set(value);
     }
 
     public long getColour(String category, String key) {
         long value = -1;
         if (this.hasKey(category, key)) {
             try {
-                String valueString = this.getString(category, key, "");
+                String valueString = this.get(category, key, "").getString();
                 if (valueString.length() > 0) {
                     value = Long.parseLong(valueString, 16);
                     value &= 0xffffffffL;
@@ -159,34 +65,31 @@ public class MwConfig {
     }
 
     public void setColour(String category, String key, int n) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            object.add(key, new JsonPrimitive(String.format("%08x", n)));
-        }
+        this.get(category, key, "00000000").set(String.format("%08x", n));
     }
 
-//    public void setColour(String category, String key, int n, String comment) {
-//        this.get(category, key, "00000000", comment).set(String.format("%08x", n));
-//    }
-//
-//    public String getSingleWord(String category, String key) {
-//        String value = "";
-//        if (this.hasKey(category, key)) {
-//            value = this.get(category, key, value).getString().trim();
-//            int firstSpace = value.indexOf(' ');
-//            if (firstSpace >= 0) {
-//                value = value.substring(0, firstSpace);
-//            }
-//        }
-//        return value;
-//    }
-//
-//    public void setSingleWord(String category, String key, String value, String comment) {
-//        if ((comment != null) && (comment.length() > 0)) {
-//            value = value + " # " + comment;
-//        }
-//        this.get(category, key, value).set(value);
-//    }
+    public void setColour(String category, String key, int n, String comment) {
+        this.get(category, key, "00000000", comment).set(String.format("%08x", n));
+    }
+
+    public String getSingleWord(String category, String key) {
+        String value = "";
+        if (this.hasKey(category, key)) {
+            value = this.get(category, key, value).getString().trim();
+            int firstSpace = value.indexOf(' ');
+            if (firstSpace >= 0) {
+                value = value.substring(0, firstSpace);
+            }
+        }
+        return value;
+    }
+
+    public void setSingleWord(String category, String key, String value, String comment) {
+        if ((comment != null) && (comment.length() > 0)) {
+            value = value + " # " + comment;
+        }
+        this.get(category, key, value).set(value);
+    }
 
     public void getIntList(String category, String key, List<Integer> list) {
         // convert List of integers to integer array to pass as default value
@@ -199,7 +102,7 @@ public class MwConfig {
         // get integer array from config file
         int[] arrayFromConfig = null;
         try {
-            arrayFromConfig = this.getIntArray(category, key, array);
+            arrayFromConfig = this.get(category, key, array).getIntList();
         } catch (Exception e) {
             e.printStackTrace();
             arrayFromConfig = null;
@@ -216,11 +119,17 @@ public class MwConfig {
     }
 
     public void setIntList(String category, String key, List<Integer> list) {
-        JsonObject object = this.enterCategory(category);
-        if (object != null) {
-            JsonArray jsonArray = new JsonArray();
-            list.forEach(x -> jsonArray.add(new JsonPrimitive(x)));
-            object.add(key, jsonArray);
+        // convert List of integers to integer array
+        int size = list.size();
+        String[] array = new String[size];
+        for (int i = 0; i < size; i++) {
+            array[i] = list.get(i).toString();
+        }
+        // write integer array to config file
+        try {
+            this.get(category, key, array).set(array);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

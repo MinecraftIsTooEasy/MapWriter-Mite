@@ -24,14 +24,15 @@ public class MarkerManager {
 
     public void load(MwConfig config, String category) {
         this.markerList.clear();
+
         if (config.hasCategory(category)) {
-            int markerCount = config.getInt(category, "markerCount", 0);
-            this.visibleGroupName = config.getString(category, "visibleGroup", "");
+            int markerCount = config.get(category, "markerCount", 0).getInt();
+            this.visibleGroupName = config.get(category, "visibleGroup", "").getString();
 
             if (markerCount > 0) {
                 for (int i = 0; i < markerCount; i++) {
                     String key = "marker" + i;
-                    String value = config.getString(category, key, "");
+                    String value = config.get(category, key, "").getString();
                     Marker marker = this.stringToMarker(value);
                     if (marker != null) {
                         this.addMarker(marker);
@@ -46,14 +47,14 @@ public class MarkerManager {
     }
 
     public void save(MwConfig config, String category) {
-        config.setInt(category, "markerCount", this.markerList.size());
-        config.setString(category, "visibleGroup", this.visibleGroupName);
+        config.get(category, "markerCount", 0).set(this.markerList.size());
+        config.get(category, "visibleGroup", "").set(this.visibleGroupName);
 
         int i = 0;
         for (Marker marker : this.markerList) {
             String key = "marker" + i;
             String value = this.markerToString(marker);
-            config.setString(category, key, value);
+            config.get(category, key, "").set(value);
             i++;
         }
     }
