@@ -206,6 +206,7 @@ public class MwGuiOptionSlot extends GuiSlot {
 		default:
 			break;
 		}
+		mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
 		this.updateButtonLabel(i);
 	}
 

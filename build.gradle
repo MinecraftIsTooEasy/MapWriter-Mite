@@ -16,32 +16,50 @@ repositories {
         name = "Spongepowered"
         url = "https://repo.spongepowered.org/repository/maven-public/"
     }
+    maven {
+        name = "ModdedMITE"
+        url = "https://maven.limingzxc.top/repository/maven-public/"
+    }
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
 }
+
+configurations {
+    fml
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	fml "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
+    implementation "com.github.MinecraftIsTooEasy:FishModLoader:3.4.2"
+    implementation "com.github.MinecraftIsTooEasy:ManyLib:2.3.0"
+    implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
+    implementation "maven.modrinth:forge-config-legacyfabric:1.0.0"
+    implementation("com.google.code.gson:gson:2.11.0")
+}
+
+def fmlResolvedFile = configurations.fml.files.iterator().next()
 
 loom {
     mergedMinecraftJar()
-    setFML(new File("${lib_dir}/${fish_mod_loader}"))
+    setFML(fmlResolvedFile)
+    dependencies.add("mappings", fmlMCPMappings())
     mods {
         "MapWriter" {
             sourceSet sourceSets.main
         }
     }
-
-}
-
-runClient {
-    args("--username", "${username}", "--session", "a.a.a.a", "--width", 854, "--height", 480)
-}
-
-dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.fmlMCPMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    implementation files(loom.getFML().toPath())
-    implementation files("${lib_dir}/ManyLib.jar")
-    implementation files("${lib_dir}/ModMenu.jar")
-    implementation files("${lib_dir}/ForgeConfig.jar")
+    runs {
+        client {
+            String name = project.username
+            String width = project.screen_width
+            String height = project.screen_height
+            programArgs "--userProperties", "{}", "--username", name, "--session", "a.a.a.a", "--width", width, "--height", height
+        }
+    }
 }
 
 processResources {
@@ -64,21 +82,30 @@ java {
 }
 
 jar {
+    inputs.property "archivesName", project.base.archivesName
 
+    from("LICENSE") {
+        rename { "${it}_${inputs.properties.archivesName}"}
+    }
 }
 
-// configure the maven publication
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = project.archives_base_name
             from components.java
         }
     }
 
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        maven {
+            name = "ModdedMITE"
+            url = uri("https://maven.limingzxc.top/repository/maven-releases/")
+            credentials {
+                // Read only from gradle.properties (user level, your gradle_home)
+                username = project.findProperty("nexusUsername")
+                password = project.findProperty("nexusPassword")
+            }
+        }
     }
 }

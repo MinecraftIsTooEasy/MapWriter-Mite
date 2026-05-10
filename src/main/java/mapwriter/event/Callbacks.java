@@ -1,5 +1,6 @@
 package mapwriter.event;
 
+import fi.dy.masa.malilib.hotkeys.KeyAction;
 import mapwriter.Mw;
 import mapwriter.gui.MwGui;
 import mapwriter.gui.MwGuiMarkerDialog;
@@ -81,6 +82,7 @@ public class Callbacks {
         });
 
         MwHotkeyConfig.keyZoomIn.getKeybind().setCallback((keyAction, iKeybind) -> {
+            if (!keyAction.equals(KeyAction.RELEASE)) return false;
             if (!ready()) return false;
             if (mc.currentScreen == null || mc.currentScreen instanceof MwGui) {
                 mw.miniMap.view.adjustZoomLevel(-1);
@@ -90,6 +92,7 @@ public class Callbacks {
         });
 
         MwHotkeyConfig.keyZoomOut.getKeybind().setCallback((keyAction, iKeybind) -> {
+            if (!keyAction.equals(KeyAction.RELEASE)) return false;
             if (!ready()) return false;
             if (mc.currentScreen == null || mc.currentScreen instanceof MwGui) {
                 mw.miniMap.view.adjustZoomLevel(1);

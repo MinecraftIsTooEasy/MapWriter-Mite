@@ -15,7 +15,7 @@ import java.io.File;
 public class InitHandler implements IInitializationHandler {
     @Override
     public void registerModHandlers() {
-        MwConfig config = new MwConfig(new File("config" + File.separator + Mw.MOD_ID + "_Legacy" + ".json"));
+        MwConfig config = new MwConfig(new File("config" + File.separator + Mw.MOD_ID + "_Legacy" + ".cfg"));
         new Mw(config);
         MwHotkeyConfig.getInstance().load();
         ConfigManager.getInstance().registerConfig(MwHotkeyConfig.getInstance());

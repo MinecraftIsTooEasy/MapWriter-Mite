@@ -89,6 +89,7 @@ public class Mw implements IClientTickHandler {
 
     // configuration options
     public boolean linearTextureScalingEnabled = true;
+    public boolean circularMode = true;
     public int coordsMode = 0;
     public boolean undergroundMode = false;
     public boolean teleportEnabled = true;
@@ -206,6 +207,7 @@ public class Mw implements IClientTickHandler {
     public void loadConfig() {
         this.config.load();
         this.linearTextureScalingEnabled = this.config.getOrSetBoolean(catOptions, "linearTextureScaling", this.linearTextureScalingEnabled);
+        this.circularMode =  this.config.getOrSetBoolean(catOptions, "circularMode", this.circularMode);
         this.useSavedBlockColours = this.config.getOrSetBoolean(catOptions, "useSavedBlockColours", this.useSavedBlockColours);
         this.teleportEnabled = this.config.getOrSetBoolean(catOptions, "teleportEnabled", this.teleportEnabled);
         this.teleportCommand = this.config.get(catOptions, "teleportCommand", this.teleportCommand).getString();
@@ -243,6 +245,7 @@ public class Mw implements IClientTickHandler {
 
     public void saveConfig() {
         this.config.setBoolean(catOptions, "linearTextureScaling", this.linearTextureScalingEnabled);
+        this.config.setBoolean(catOptions, "circularMode", this.circularMode);
         this.config.setBoolean(catOptions, "useSavedBlockColours", this.useSavedBlockColours);
         this.config.setInt(catOptions, "textureSize", this.configTextureSize);
         this.config.setInt(catOptions, "coordsMode", this.coordsMode);

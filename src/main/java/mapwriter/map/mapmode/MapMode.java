@@ -27,8 +27,8 @@ public class MapMode {
 	
 	// config settings
 	public boolean enabled = true;
-	public boolean rotate = true;
-	public boolean circular = true;
+	public boolean rotate;
+	public boolean circular;
 	public boolean coordsEnabled = false;
 	public int borderMode = 1;
 	public int playerArrowSize = 5;
