@@ -1,5 +1,5 @@
 plugins {
-    id 'fml-loom' version '0.1.local'
+    id 'fml-loom' version '0.1'
     id 'maven-publish'
 }
 
