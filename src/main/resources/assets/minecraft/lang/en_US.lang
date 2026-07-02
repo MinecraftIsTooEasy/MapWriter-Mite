@@ -15,6 +15,19 @@ mw.button.dimension=[dimension: %d]
 mw.button.group=[group: %s]
 mw.button.overlay=[overlay : %s]
 
+mw.button.center_player=[Center]
+mw.button.save_image=[Save]
+mw.button.regenerate=[Refresh]
+mw.button.underground=[Underground: %s]
+
+mw.button.delete=[Delete]
+mw.button.teleport=[Teleport]
+mw.button.done=[done]
+mw.button.cancel=[Cancel]
+
+mw.button.on=On
+mw.button.off=Off
+
 mw.button.group.none=None
 mw.button.group.all=All
 mw.button.group.player_deaths=playerDeaths
@@ -26,9 +39,10 @@ mv.button.overlay.grid=Grid
 mw.cursor.pos.ynonull=cursor: (%d, %d, %d)
 mw.cursor.pos.ynull=cursor: (%d, ?, %d)
 mw.cursor.biome=, biome: %s
+mw.cursor.marker=, marker: %s
 
 mw.help.keys=Keys:
-mw.help.space=空格
+mw.help.space=Space
 mw.help.delete=Delete
 mw.help.c=C
 mw.help.home=Home
@@ -58,12 +72,14 @@ mw.title.dimension=Set dimension to:
 mw.text.dimension.error=invalid dimension
 mw.title.marker=Marker Name:
 mw.text.marker.error=marker must have a name
-mw.title.marker.edit=Edit Marker Name:
+mw.title.marker.new=New Marker:
+mw.title.marker.edit=Edit Marker:
 mw.title.marker.group=Marker Group:
 mw.title.marker.group.error=marker must have a group name
 mw.title.marker.value.x=Marker X:
 mw.title.marker.value.y=Marker Y:
 mw.title.marker.value.z=Marker Z:
+mw.title.marker.value.color=Marker Colour:
 mw.title.marker.value.error=invalid value
 mw.title.options=MapWriter Options
 mw.title.teleport=Teleport Height:
@@ -81,6 +97,7 @@ mw.options.mini_map_position=Mini map position:
 mw.options.map_pixel_snapping=Map pixel snapping:
 mw.options.max_death_markers=Max death markers:
 mw.options.background_mode=Background mode:
+mw.options.entity_display_mode=Creature display mode:
 mw.options.hotkeys=Hotkeys
 
 mw.options.mini_map_position.unchanged=unchanged
@@ -97,6 +114,10 @@ mw.options.background_mode.none=none
 mw.options.background_mode.static=static
 mw.options.background_mode.panning=panning
 
+mw.options.entity_display_mode.off=off
+mw.options.entity_display_mode.dot=dot
+mw.options.entity_display_mode.name=name
+
 mw.options.texture_scaling.linear=linear
 mw.options.texture_scaling.nearest=nearest
 
@@ -107,3 +128,7 @@ mw.options.enabled=enabled
 mw.options.disabled=disabled
 
 mw.ingame.underground_mode=Underground Mode
+
+mw.title.map_context=Map Action:
+mw.button.map_context.new_marker=[New Marker]
+mw.button.map_context.teleport_here=[Teleport to Here]

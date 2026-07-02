@@ -31,6 +31,11 @@ public class MwGuiOptionSlot extends GuiSlot {
 		I18n.getString("mw.options.background_mode.static"),
 		I18n.getString("mw.options.background_mode.panning")
 	};
+	private static final String[] entityDisplayModeStringArray = {
+			I18n.getString("mw.options.entity_display_mode.off"),
+			I18n.getString("mw.options.entity_display_mode.dot"),
+			I18n.getString("mw.options.entity_display_mode.name")
+	};
 	
 	private GuiButton[] buttons = new GuiButton[13];
 	
@@ -74,10 +79,13 @@ public class MwGuiOptionSlot extends GuiSlot {
 		case 11:
 			this.buttons[i].displayString = I18n.getString("mw.options.background_mode") + backgroundModeStringArray[this.mw.backgroundTextureMode];
 			break;
+		case 12:
+			this.buttons[i].displayString = I18n.getString("mw.options.entity_display_mode") + entityDisplayModeStringArray[this.mw.entityDisplayMode];
+			break;
 		//case 11:
 		//	this.buttons[i].displayString = "Map Lighting: " + (this.mw.lightingEnabled ? "enabled" : "disabled");
 		//	break;
-		case 12:
+		case 13:
 			this.buttons[i].displayString = I18n.getString("mw.options.hotkeys");
 			break;
 		default:
@@ -196,6 +204,10 @@ public class MwGuiOptionSlot extends GuiSlot {
 			this.mw.backgroundTextureMode = (this.mw.backgroundTextureMode + 1) % 3;
 			break;
 		case 12:
+			// background texture mode
+			this.mw.entityDisplayMode = (this.mw.entityDisplayMode + 1) % 3;
+			break;
+		case 13:
 			// hotkeys
 			Minecraft.getMinecraft().displayGuiScreen(MwHotkeyConfig.getInstance().getConfigScreen(null));
 			break;

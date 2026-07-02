@@ -109,6 +109,7 @@ public class Mw implements IClientTickHandler {
     public boolean regionFileOutputEnabledSP = true;
     public boolean regionFileOutputEnabledMP = true;
     public int backgroundTextureMode = 0;
+    public int entityDisplayMode = 0;
     //public boolean lightingEnabled = false;
 
     // flags and counters
@@ -222,6 +223,7 @@ public class Mw implements IClientTickHandler {
         this.regionFileOutputEnabledSP = this.config.getOrSetBoolean(catOptions, "regionFileOutputEnabledSP", this.regionFileOutputEnabledSP);
         this.regionFileOutputEnabledMP = this.config.getOrSetBoolean(catOptions, "regionFileOutputEnabledMP", this.regionFileOutputEnabledMP);
         this.backgroundTextureMode = this.config.getOrSetInt(catOptions, "backgroundTextureMode", this.backgroundTextureMode, 0, 1);
+        this.entityDisplayMode = this.config.getOrSetInt(catOptions, "entityDisplayMode", this.entityDisplayMode, 0, 2);
         //this.lightingEnabled = this.config.getOrSetBoolean(catOptions, "lightingEnabled", this.lightingEnabled);
 
         this.maxZoom = this.config.getOrSetInt(catOptions, "zoomOutLevels", this.maxZoom, 1, 256);
@@ -255,6 +257,7 @@ public class Mw implements IClientTickHandler {
         this.config.setInt(catOptions, "chunksPerTick", this.chunksPerTick);
         this.config.setBoolean(catOptions, "undergroundMode", this.undergroundMode);
         this.config.setInt(catOptions, "backgroundTextureMode", this.backgroundTextureMode);
+        this.config.setInt(catOptions, "entityDisplayMode", this.entityDisplayMode);
         //this.config.setBoolean(catOptions, "lightingEnabled", this.lightingEnabled);
 
         this.config.save();

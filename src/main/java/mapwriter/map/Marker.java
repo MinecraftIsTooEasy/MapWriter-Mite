@@ -71,8 +71,7 @@ public class Marker {
 	@Override
 	public boolean equals(final Object o) {
 		if (this == o) { return true; }
-		if (o instanceof Marker) {
-			Marker m = (Marker) o;
+		if (o instanceof Marker m) {
 			return (name == m.name) && (groupName == m.groupName) && (x == m.x) && (y == m.y) && (z == m.z) && (dimension == m.dimension);
 		}
 		return false;

@@ -37,6 +37,7 @@ public class Callbacks {
             mc.displayGuiScreen(
                     new MwGuiMarkerDialog(
                             null,
+                            mw,
                             mw.markerManager,
                             "",
                             group,

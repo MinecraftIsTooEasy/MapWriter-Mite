@@ -249,6 +249,23 @@ public class Render {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
 	}
+	public static void drawRhombus(double x, double y, double angle, double size) {
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		Tessellator tes = Tessellator.instance;
+		tes.startDrawing(GL11.GL_TRIANGLE_FAN);
+		double halfPi = Math.PI / 2.0D;
+		tes.addVertex(x + (size * Math.cos(angle - halfPi)), y + (size * Math.sin(angle - halfPi)), zDepth);
+		tes.addVertex(x + (size * Math.cos(angle)), y + (size * Math.sin(angle)), zDepth);
+		tes.addVertex(x + (size * Math.cos(angle + halfPi)), y + (size * Math.sin(angle + halfPi)), zDepth);
+		tes.addVertex(x + (size * Math.cos(angle + Math.PI)), y + (size * Math.sin(angle + Math.PI)), zDepth);
+		tes.draw();
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+	}
 	
 	public static void drawRectBorder(double x, double y, double w, double h, double bw) {
 		// top border

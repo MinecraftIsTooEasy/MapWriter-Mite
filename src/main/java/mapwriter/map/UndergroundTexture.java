@@ -20,7 +20,10 @@ public class UndergroundTexture extends Texture {
     private int pz = 0;
     private int updateX;
     private int updateZ;
-    private byte[][] updateFlags = new byte[9][256];
+    private byte[][] updateFlags;
+    private int updateGridW;
+    private int updateGridH;
+    private int viewCxMin, viewCzMin, viewCxMax, viewCzMax;
     private Point[] loadedChunkArray;
     private int textureSize;
     private int textureChunks;
@@ -80,15 +83,14 @@ public class UndergroundTexture extends Texture {
 
     void renderToTexture(int y) {
         this.setPixelBufPosition(0);
-        for (int i = 0; i < this.pixels.length; i++) {
-            int colour = this.pixels[i];
-            int height = (colour >> 24) & 0xff;
-            int alpha = (y >= height) ? 255 - ((y - height) * 8) : 0;
-            if (alpha < 0) {
-                alpha = 0;
-            }
-            this.pixelBufPut(((alpha << 24) & 0xff000000) | (colour & 0xffffff));
-        }
+	    for (int colour : this.pixels) {
+		    int height = (colour >> 24) & 0xff;
+		    int alpha = (y >= height) ? 255 - ((y - height) * 8) : 0;
+		    if (alpha < 0) {
+			    alpha = 0;
+		    }
+		    this.pixelBufPut(((alpha << 24) & 0xff000000) | (colour & 0xffffff));
+	    }
         this.updateTexture();
     }
 
@@ -99,12 +101,12 @@ public class UndergroundTexture extends Texture {
     }
 
     public void requestView(MapView view) {
-        int cxMin = ((int) view.getMinX()) >> 4;
-        int czMin = ((int) view.getMinZ()) >> 4;
-        int cxMax = ((int) view.getMaxX()) >> 4;
-        int czMax = ((int) view.getMaxZ()) >> 4;
-        for (int cz = czMin; cz <= czMax; cz++) {
-            for (int cx = cxMin; cx <= cxMax; cx++) {
+        this.viewCxMin = ((int) view.getMinX()) >> 4;
+        this.viewCzMin = ((int) view.getMinZ()) >> 4;
+        this.viewCxMax = ((int) view.getMaxX()) >> 4;
+        this.viewCzMax = ((int) view.getMaxZ()) >> 4;
+        for (int cz = this.viewCzMin; cz <= this.viewCzMax; cz++) {
+            for (int cx = this.viewCxMin; cx <= this.viewCxMax; cx++) {
                 Point requestedChunk = new Point(cx, cz);
                 int offset = this.getLoadedChunkOffset(cx, cz);
                 Point currentChunk = this.loadedChunkArray[offset];
@@ -124,14 +126,21 @@ public class UndergroundTexture extends Texture {
     }
 
     public void update() {
-        this.clearFlags();
-
         this.px = this.mw.playerXInt;
         this.py = this.mw.playerYInt;
         this.pz = this.mw.playerZInt;
 
-        this.updateX = (this.px >> 4) - 1;
-        this.updateZ = (this.pz >> 4) - 1;
+        this.updateGridW = this.viewCxMax - this.viewCxMin + 1;
+        this.updateGridH = this.viewCzMax - this.viewCzMin + 1;
+        if (this.updateGridW < 1) { this.updateGridW = 3; this.updateGridH = 3; }
+        int totalChunks = this.updateGridW * (this.viewCzMax - this.viewCzMin + 1);
+        if (this.updateFlags == null || this.updateFlags.length != totalChunks) {
+            this.updateFlags = new byte[totalChunks][256];
+        }
+        this.clearFlags();
+
+        this.updateX = this.viewCxMin;
+        this.updateZ = this.viewCzMin;
 
         this.processBlock(
                 this.px - (this.updateX << 4),
@@ -139,12 +148,10 @@ public class UndergroundTexture extends Texture {
                 this.pz - (this.updateZ << 4)
         );
 
-        int cxMax = this.updateX + 2;
-        int czMax = this.updateZ + 2;
         WorldClient world = this.mw.mc.theWorld;
         int flagOffset = 0;
-        for (int cz = this.updateZ; cz <= czMax; cz++) {
-            for (int cx = this.updateX; cx <= cxMax; cx++) {
+        for (int cz = this.viewCzMin; cz <= this.viewCzMax; cz++) {
+            for (int cx = this.viewCxMin; cx <= this.viewCxMax; cx++) {
                 if (this.isChunkInTexture(cx, cz)) {
                     Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
                     int tx = (cx << 4) & (this.textureSize - 1);
@@ -171,39 +178,66 @@ public class UndergroundTexture extends Texture {
         }
     }
 
-    private void processBlock(int xi, int y, int zi) {
-        int x = (this.updateX << 4) + xi;
-        int z = (this.updateZ << 4) + zi;
+    private void processBlock(int sXi, int y, int startZi) {
+        int[] stackX = new int[65536];
+        int[] stackZ = new int[65536];
+        int stackPos = 0;
+        stackX[stackPos] = sXi;
+        stackZ[stackPos] = startZi;
+        stackPos++;
 
-        int xDist = this.px - x;
-        int zDist = this.pz - z;
+        WorldClient world = this.mw.mc.theWorld;
 
-        if (((xDist * xDist) + (zDist * zDist)) <= 256) {
-            if (this.isChunkInTexture(x >> 4, z >> 4)) {
-                int chunkOffset = ((zi >> 4) * 3) + (xi >> 4);
-                int columnXi = xi & 0xf;
-                int columnZi = zi & 0xf;
-                int columnOffset = (columnZi << 4) + columnXi;
-                byte columnFlag = this.updateFlags[chunkOffset][columnOffset];
+        while (stackPos > 0) {
+            stackPos--;
+            int xi = stackX[stackPos];
+            int zi = stackZ[stackPos];
 
-                if (columnFlag == ChunkRender.FLAG_UNPROCESSED) {
-                    // if column not yet processed
-                    WorldClient world = this.mw.mc.theWorld;
-                    int blockID = world.getBlockId(x, y, z);
-                    Block block = Block.blocksList[blockID];
+            // skip if outside the update grid
+            if (xi < 0 || zi < 0 || (xi >> 4) >= this.updateGridW || (zi >> 4) >= this.updateGridH) {
+                continue;
+            }
+
+            int x = (this.updateX << 4) + xi;
+            int z = (this.updateZ << 4) + zi;
+
+            int xDist = this.px - x;
+            int zDist = this.pz - z;
+
+            if (((xDist * xDist) + (zDist * zDist)) > 65536) {
+                continue;
+            }
+
+            if (!this.isChunkInTexture(x >> 4, z >> 4)) {
+                continue;
+            }
+
+            int chunkOffset = ((zi >> 4) * this.updateGridW) + (xi >> 4);
+            int columnXi = xi & 0xf;
+            int columnZi = zi & 0xf;
+            int columnOffset = (columnZi << 4) + columnXi;
+            byte columnFlag = this.updateFlags[chunkOffset][columnOffset];
+
+            if (columnFlag != ChunkRender.FLAG_UNPROCESSED) {
+                // if column not yet processed
+                continue;
+            }
+
+            int blockID = world.getBlockId(x, y, z);
+            Block block = Block.blocksList[blockID];
 //					if ((block == null) || !block.isOpaqueCube()) {
-                    if ((block == null)) {
-                        // if block is not opaque
-                        this.updateFlags[chunkOffset][columnOffset] = (byte) ChunkRender.FLAG_NON_OPAQUE;
-                        this.processBlock(xi + 1, y, zi);
-                        this.processBlock(xi - 1, y, zi);
-                        this.processBlock(xi, y, zi + 1);
-                        this.processBlock(xi, y, zi - 1);
-                    } else {
-                        // block is opaque
-                        this.updateFlags[chunkOffset][columnOffset] = (byte) ChunkRender.FLAG_OPAQUE;
-                    }
+            if ((block == null)) {
+                // if block is not opaque
+                this.updateFlags[chunkOffset][columnOffset] = (byte) ChunkRender.FLAG_NON_OPAQUE;
+                if (stackPos + 4 < stackX.length) {
+                    stackX[stackPos] = xi + 1; stackZ[stackPos] = zi; stackPos++;
+                    stackX[stackPos] = xi - 1; stackZ[stackPos] = zi; stackPos++;
+                    stackX[stackPos] = xi; stackZ[stackPos] = zi + 1; stackPos++;
+                    stackX[stackPos] = xi; stackZ[stackPos] = zi - 1; stackPos++;
                 }
+            } else {
+                // block is opaque
+                this.updateFlags[chunkOffset][columnOffset] = (byte) ChunkRender.FLAG_OPAQUE;
             }
         }
     }

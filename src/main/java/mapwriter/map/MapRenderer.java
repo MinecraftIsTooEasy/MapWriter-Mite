@@ -11,7 +11,11 @@ import mapwriter.api.IMwDataProvider;
 import mapwriter.api.MwAPI;
 import mapwriter.map.mapmode.MapMode;
 import net.minecraft.Entity;
+import net.minecraft.EntityBat;
 import net.minecraft.EntityLiving;
+import net.minecraft.EntityNightwing;
+import net.minecraft.EntityVampireBat;
+import net.minecraft.IMob;
 import net.minecraft.I18n;
 import net.minecraft.ResourceLocation;
 
@@ -88,7 +92,7 @@ public class MapRenderer {
 			this.mw.undergroundMapTexture.bind();
 			Render.drawTexturedRect(
 					this.mapMode.x, this.mapMode.y, this.mapMode.w, this.mapMode.h,
-					u, v, u + w, v + h 
+					u, v, u + w, v + h
 			);
 		} else {
 			// draw the surface map
@@ -326,55 +330,69 @@ public class MapRenderer {
 		Render.setColour(overlay.getColor());
 		Render.drawRect(topCorner.x + offsetX + 1, topCorner.y + offsetY + 1, sizeX - 1, sizeY - 1);
 	}
-	
+
 	private void drawEntities() {
-		GL11.glPushMatrix();
-		if (this.mapMode.rotate) {
-			GL11.glRotated(this.mw.mapRotationDegrees, 0.0f, 0.0f, 1.0f);
-		}
+		int mode = this.mw.entityDisplayMode;
+		if (mode == 0) return;
 
 		for (Entity entity : (List<Entity>) this.mw.mc.theWorld.loadedEntityList) {
 			if (entity == this.mw.mc.thePlayer) continue;
 			if (!(entity instanceof EntityLiving)) continue;
 			if (Math.abs(entity.posY - this.mw.playerY) > 10.0) continue;
 
-			Point.Double screenPos = this.mapMode.blockXZtoScreenXY(this.mapView,
-					entity.posX * this.mapView.getDimensionScaling(this.mw.playerDimension),
-					entity.posZ * this.mapView.getDimensionScaling(this.mw.playerDimension));
-			
-			double margin = 1.0;
-			if (screenPos.x < this.mapMode.x - margin ||
-					screenPos.x > this.mapMode.x + this.mapMode.w + margin ||
-					screenPos.y < this.mapMode.y - margin ||
-					screenPos.y > this.mapMode.y + this.mapMode.h + margin) {
-				continue;
-			}
-			
-			String entityName = entity.getEntityName();
-			if (entityName == null || entityName.isEmpty()) {
-				continue;
-			}
-			
-			GL11.glPushMatrix();
-			GL11.glTranslatef((float) (screenPos.x), (float) (screenPos.y), 0);
-			
-			if (this.mapMode.rotate) {
-				GL11.glRotated(-this.mw.mapRotationDegrees, 0.0f, 0.0f, 1.0f);
-			}
-			
-			GL11.glScalef(0.5F, 0.5F, 1.0F);
+			double scale = this.mapView.getDimensionScaling(this.mw.playerDimension);
+			Point.Double p = this.mapMode.blockXZtoScreenXY(this.mapView,
+					entity.posX * scale, entity.posZ * scale);
 
-			int textWidth = this.mw.mc.fontRenderer.getStringWidth(entityName);
-			int textHeight = this.mw.mc.fontRenderer.FONT_HEIGHT;
-			int backgroundX = -(textWidth / 2);
-			int backgroundY = -8;
-			Render.setColourWithAlphaPercent(0x000000, 60);
-			Render.drawRect(backgroundX - 2, backgroundY - 1, textWidth + 4, textHeight + 2);
-			Render.drawCentredString(0, backgroundY, 0xFFFFFFFF, "%s", entityName);
-			
-			GL11.glPopMatrix();
+			double margin = 1.0;
+			if (p.x < this.mapMode.x - margin ||
+					p.x > this.mapMode.x + this.mapMode.w + margin ||
+					p.y < this.mapMode.y - margin ||
+					p.y > this.mapMode.y + this.mapMode.h + margin) {
+				continue;
+			}
+
+			if (mode == 1) {
+				Render.setColourWithAlphaPercent(0xff000000, 100);
+				Render.drawRhombus(p.x, p.y, 0, 1.5);
+				Render.setColourWithAlphaPercent(getEntityColour(entity), 100);
+				Render.drawRhombus(p.x, p.y, 0, 1.5 - 0.5);
+				if (org.lwjgl.input.Keyboard.isKeyDown(org.lwjgl.input.Keyboard.KEY_LMENU)
+						|| org.lwjgl.input.Keyboard.isKeyDown(org.lwjgl.input.Keyboard.KEY_RMENU)) {
+					this.drawEntityNameTag(entity, p.x, p.y);
+				}
+			} else {
+				this.drawEntityNameTag(entity, p.x, p.y);
+			}
 		}
+	}
+
+	private void drawEntityNameTag(Entity entity, double x, double y) {
+		String entityName = entity.getEntityName();
+		if (entityName == null || entityName.isEmpty()) return;
+
+		GL11.glPushMatrix();
+		GL11.glTranslatef((float) x, (float) y, 0);
+		if (this.mapMode.rotate) {
+			GL11.glRotated(-this.mw.mapRotationDegrees, 0.0f, 0.0f, 1.0f);
+		}
+		GL11.glScalef(0.5F, 0.5F, 1.0F);
+
+		int textWidth = this.mw.mc.fontRenderer.getStringWidth(entityName);
+		int textHeight = this.mw.mc.fontRenderer.FONT_HEIGHT;
+		int backgroundX = -(textWidth / 2);
+		int backgroundY = 4;
+		Render.setColourWithAlphaPercent(0x000000, 50);
+		Render.drawRect(backgroundX - 2, backgroundY - 1, textWidth + 4, textHeight + 2);
+		Render.drawCentredString(0, backgroundY, 0xFFFFFFFF, "%s", entityName);
+
 		GL11.glPopMatrix();
 	}
+
+	private static int getEntityColour(Entity entity) {
+		if (entity instanceof IMob || entity instanceof EntityNightwing || entity instanceof EntityVampireBat) return 0xFFFFC800;
+		return 0xFF001BFF;
+	}
+
 }
 

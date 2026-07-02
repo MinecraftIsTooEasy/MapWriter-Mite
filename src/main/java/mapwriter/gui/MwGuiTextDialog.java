@@ -6,7 +6,7 @@ import net.minecraft.*;
 
 public class MwGuiTextDialog extends GuiScreen {
 
-	private final GuiScreen parentScreen;
+	final GuiScreen parentScreen;
 	
 	String title;
 	String text;

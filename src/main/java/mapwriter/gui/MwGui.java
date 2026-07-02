@@ -56,6 +56,11 @@ public class MwGui extends GuiScreen {
     private Label groupLabel;
     private Label overlayLabel;
 
+    private Label centerPlayerLabel;
+    private Label saveImageLabel;
+    private Label refreshLabel;
+    private Label undergroundLabel;
+
     class Label {
         int x = 0, y = 0, w = 1, h = 12;
 
@@ -72,6 +77,11 @@ public class MwGui extends GuiScreen {
 
         public void drawToRightOf(Label label, String s) {
             this.draw(label.x + label.w + 5, label.y, s);
+        }
+
+        public void drawToLeftOf(Label label, String s) {
+            int w = MwGui.this.fontRenderer.getStringWidth(s) + 4;
+            this.draw(label.x - 5 - w, label.y, s);
         }
 
         public boolean posWithin(int x, int y) {
@@ -94,6 +104,10 @@ public class MwGui extends GuiScreen {
         this.dimensionLabel = new Label();
         this.groupLabel = new Label();
         this.overlayLabel = new Label();
+        this.centerPlayerLabel = new Label();
+        this.saveImageLabel = new Label();
+        this.refreshLabel = new Label();
+        this.undergroundLabel = new Label();
     }
 
     public MwGui(Mw mw, int dim, int x, int z) {
@@ -323,6 +337,17 @@ public class MwGui extends GuiScreen {
                 );
             } else if (this.optionsLabel.posWithin(x, y)) {
                 this.mc.displayGuiScreen(new MwGuiOptions(this, this.mw));
+            } else if (this.centerPlayerLabel.posWithin(x, y)) {
+                this.mapView.setViewCentreScaled(this.mw.playerX, this.mw.playerZ, this.mw.playerDimension);
+            } else if (this.saveImageLabel.posWithin(x, y)) {
+                this.mergeMapViewToImage();
+                this.exitGui();
+            } else if (this.refreshLabel.posWithin(x, y)) {
+                this.regenerateView();
+//                this.exitGui();
+            } else if (this.undergroundLabel.posWithin(x, y)) {
+                this.mw.undergroundMode = !this.mw.undergroundMode;
+                this.mapView.setUndergroundMode(this.mw.undergroundMode);
             } else {
                 this.mouseLeftHeld = 1;
                 this.mouseLeftDragStartX = x;
@@ -346,18 +371,14 @@ public class MwGui extends GuiScreen {
                 this.mc.displayGuiScreen(
                         new MwGuiMarkerDialog(
                                 this,
+                                this.mw,
                                 this.mw.markerManager,
                                 marker
                         )
                 );
 
-            } else if (marker == null) {
-                // open new marker dialog
-                String group = this.mw.markerManager.getVisibleGroupName();
-                if (group.equals("none")) {
-                    group = "group";
-                }
-
+            } else {
+                // show context menu (new marker or teleport)
                 int mx, my, mz;
                 if (this.isPlayerNearScreenPos(x, y)) {
                     // marker at player's locations
@@ -371,12 +392,13 @@ public class MwGui extends GuiScreen {
                     my = (this.mouseBlockY > 0) ? this.mouseBlockY : this.mw.defaultTeleportHeight;
                     mz = this.mouseBlockZ;
                 }
+                String title = String.format("(%d, %d, %d)", mx, my, mz);
                 this.mc.displayGuiScreen(
-                        new MwGuiMarkerDialog(
+                        new MwGuiMapContextMenu(
                                 this,
-                                this.mw.markerManager,
-                                "",
-                                group,
+                                title,
+                                this.mw,
+                                this.mapView,
                                 mx, my, mz,
                                 this.mapView.getDimension()
                         )
@@ -633,6 +655,13 @@ public class MwGui extends GuiScreen {
         this.groupLabel.drawToRightOf(this.dimensionLabel, groupString);
         String overlayString = String.format(I18n.getString("mw.button.overlay"), MwAPI.getCurrentProviderName());
         this.overlayLabel.drawToRightOf(this.groupLabel, overlayString);
+
+        // draw action buttons, right aligned
+        String undergroundText = String.format(I18n.getString("mw.button.underground"), I18n.getString(this.mw.undergroundMode ? "mw.button.on" : "mw.button.off"));
+        this.undergroundLabel.draw(this.width - menuX - (this.fontRenderer.getStringWidth(undergroundText) + 4), menuY, undergroundText);
+        this.refreshLabel.drawToLeftOf(this.undergroundLabel, I18n.getString("mw.button.regenerate"));
+        this.saveImageLabel.drawToLeftOf(this.refreshLabel, I18n.getString("mw.button.save_image"));
+        this.centerPlayerLabel.drawToLeftOf(this.saveImageLabel, I18n.getString("mw.button.center_player"));
 
         // help message on mouse over
         if (this.helpLabel.posWithin(mouseX, mouseY)) {

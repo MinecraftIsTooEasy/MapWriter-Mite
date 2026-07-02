@@ -5,7 +5,8 @@
   "depends": {
     "fishmodloader": ">=3.2.3",
     "many-lib": ">=2.2.0",
-    "forge_config": "*"
+    "forge_config": "*",
+    "rusted_iron_core": ">=1.5.0"
   },
   "environment": "client",
   "name": "MapWriter-Mini-Map",
@@ -14,7 +15,7 @@
   "authors": [
     "mapwriter",
     "Debris",
-    "Xy_Lose"
+    "Xy_Luce"
   ],
   "contributors": [
     "chrixian",
@@ -24,8 +25,8 @@
   ],
   "contact": {
     "homepage": "https://www.mcmod.cn/class/13150.html",
-    "issues": "https://github.com/De6ris/MapWriter-Mite",
-    "sources": "https://github.com/De6ris/MapWriter-Mite"
+    "issues": "https://github.com/MinecraftIsTooEasy/MapWriter-Mite",
+    "sources": "https://github.com/MinecraftIsTooEasy/MapWriter-Mite"
   },
   "licence": "MIT",
   "entrypoints": {
@@ -36,10 +37,8 @@
       "mapwriter.compat.ModMenuImpl"
     ]
   },
-  "mixins": [
-    "MapWriter.mixins.json"
-  ],
   "custom": {
     "modmenu:clientsideOnly": true
-  }
+  },
+  "accessWidener": "mw.accessWidener"
 }
