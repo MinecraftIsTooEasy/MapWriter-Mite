@@ -38,7 +38,7 @@ dependencies {
     implementation "com.github.MinecraftIsTooEasy:ModMenu:10.1.1"
     localRuntime "com.github.MinecraftIsTooEasy:OhMyCommands:3.0.0-mc1.6.4-MITE-20260629"
     implementation "maven.modrinth:forge-config-legacyfabric:1.0.0"
-    implementation "maven.modrinth:rusted-iron-core:v1.5.5"
+    implementation "maven.modrinth:rusted-iron-core:1.5.5"
     implementation("com.google.code.gson:gson:2.11.0")
 }
 
